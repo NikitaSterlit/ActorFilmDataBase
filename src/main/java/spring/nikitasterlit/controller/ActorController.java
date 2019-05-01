@@ -24,22 +24,24 @@ public class ActorController {
     public List<Actor> getAllActors(){return actorRepository.findAll();}
 
     @GetMapping("/actor/{id}")
-    public Actor findById(@PathVariable ("id")long id){return actorRepository.findById(id).get();}
+    public Actor getById(@PathVariable ("id")long id){return actorRepository.findById(id).get();}
 
+    @GetMapping("/actor/{filmdid}")
+    public Set<Actor> getListByFilmId(@PathVariable ("filmid")long id){
+        Film film = filmRepository.findById(id).get();
+        Set<Actor> actorSet = film.getActors();
+        return actorSet;
+    }
+    @PostMapping("/actor/{actorid/film/{filmid}")
+    public Film addActorByIdinFilmById(@PathVariable("actorid")long actorid, @PathVariable("filmid")long filmid){
+        Actor actor = actorRepository.findById(actorid).get();
+        Film film = filmRepository.findById(filmid).get();
+        Set<Film> filmSet = actor.getFilms();
+        filmSet.add(film);
+        return filmRepository.save(film); //TODO
+    }
     @PostMapping("/actor")
-    public Actor post(@RequestBody Actor actor){
-        //Stream.
-        return actorRepository.save(actor);}
-
-    //PostMapping("/actor/film/{filmid}")
-    //ublic Actor postActor(@RequestBody Actor actor, @PathVariable("filmid")long id){
-    //  Film film = filmRepository.findById(id).get();
-    //  Set<Actor> actorList = film.getActors();
-    //  actorList.add(actor);
-    //  film.setActors(actorList);
-    //  return actorRepository.save(actorList);
-    //  // return filmRepository.findById(id).map(actor -> List<>)
-    //}
+    public Actor post(@RequestBody Actor actor){ return actorRepository.save(actor);}
     @PutMapping("/actor/{actorid}")
     public Actor elitActor(@PathVariable("actorid")long id, @RequestBody Actor actor){
         Actor actor1 = actorRepository.findById(id).get();
@@ -48,10 +50,17 @@ public class ActorController {
         actor1.setGenre(actor.getGenre());
         return actorRepository.save(actor1);
     }
-
     @DeleteMapping("/actor/{id}")
     public String deletePost(@PathVariable("id")long id){
         actorRepository.deleteById(id);
         return "actor delete";
     }
+    @DeleteMapping("/acttor/{filmid}")
+    public String deleteAllByFilmId(@PathVariable("filmid")long id){
+        Film film = filmRepository.findById(id).get();
+        Set<Actor> setActor = film.getActors();
+        setActor.clear();
+        return "Список актоеров был удален";
+    }
+
 }

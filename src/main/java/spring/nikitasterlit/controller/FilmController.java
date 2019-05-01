@@ -21,16 +21,22 @@ public class FilmController {
     FilmRepository filmRepository;
 
     @GetMapping("/film")
-    public List<Film> getFilms (){return filmRepository.findAll();}
+    public List<Film> getFilms() {
+        return filmRepository.findAll();
+    }
+
     @GetMapping("/film/{id}")
-    public Film getFilmById(@PathVariable("id")long id){return filmRepository.findById(id).get();}
+    public Film getFilmById(@PathVariable("id") long id) {
+        return filmRepository.findById(id).get();
+    }
 
     @GetMapping("/filmlist/{actorid}")
-    public Set<Film> getFilmsByActorId(@PathVariable("actorid")long id){
+    public Set<Film> getFilmsByActorId(@PathVariable("actorid") long id) {
         return actorRepository.findById(id).get().getFilms();
     }
+
     @GetMapping("/film/actor/{filmid}/{actorid}")
-    public Actor addFilmToActor(@PathVariable ("filmid")long filmid, @PathVariable ("actorid")long actorid){
+    public Actor addFilmToActor(@PathVariable("filmid") long filmid, @PathVariable("actorid") long actorid) {
         Film film = filmRepository.findById(filmid).get();
         Actor actor = actorRepository.findById(actorid).get();
         Set<Actor> setActor = film.getActors();
@@ -40,13 +46,29 @@ public class FilmController {
     }
 
     @PostMapping("/film")
-    public Film addFilm(@RequestBody Film film){return filmRepository.save(film);}
+    public Film addFilm(@RequestBody Film film) {
+        return filmRepository.save(film);
+    }
+
     @PostMapping("/film/{filmid}/actor")
-    public Film addActorToFilm(@RequestBody Actor actor, @PathVariable("filmid")long id){
+    public Film addActorToFilm(@RequestBody Actor actor, @PathVariable("filmid") long id) {
         Film film = filmRepository.findById(id).get();
         Set<Actor> setActor = film.getActors();
         setActor.add(actor);
         film.setActors(setActor);
         return filmRepository.save(film);
+    }
+
+    @DeleteMapping("/film/{filmid}")
+    public String deleteFilmById(@PathVariable("filmid") long id) {
+        filmRepository.deleteById(id);
+        return "Film has been delete";
+    }
+    @DeleteMapping("/film/{actorid}")
+    public String deleteFilmsByActorsId(@PathVariable("actorid")long id){
+        Actor actor = actorRepository.findById(id).get();
+        Set<Film> setFilms = actor.getFilms();
+        setFilms.clear();
+        return "Список фильмов очищен";
     }
 }
