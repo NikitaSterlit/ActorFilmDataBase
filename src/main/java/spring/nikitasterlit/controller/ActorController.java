@@ -56,11 +56,11 @@ public class ActorController {
         return "actor delete";
     }
     @DeleteMapping("/acttor/{filmid}")
-    public String deleteAllByFilmId(@PathVariable("filmid")long id){
+    public void deleteAllByFilmId(@PathVariable("filmid")long id){
         Film film = filmRepository.findById(id).get();
         Set<Actor> setActor = film.getActors();
         setActor.clear();
-        return "Список актоеров был удален";
+        //return "Список актоеров был удален";
     }
 
 }
