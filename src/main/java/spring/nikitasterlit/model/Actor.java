@@ -1,6 +1,7 @@
 package spring.nikitasterlit.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -32,6 +33,10 @@ public class Actor implements Serializable {
     @Size
     @Column(name = "genre")
     private String genre;
+
+   @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+   @JoinColumn(name = "manager_id")
+   private Manager manager;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -91,5 +96,13 @@ public class Actor implements Serializable {
 
     public void setFilms(Set<Film> films) {
         this.films = films;
+    }
+
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
     }
 }
