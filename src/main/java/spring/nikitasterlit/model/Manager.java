@@ -27,6 +27,10 @@ public class Manager {
     @Column(name = "status")
     private String status;
 
+    @OneToOne
+    @JoinColumn(name = "lable_company")
+    private LableCompany lableCompany;
+
     public Manager() {
     }
 
@@ -66,5 +70,13 @@ public class Manager {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public LableCompany getLableCompany() {
+        return lableCompany;
+    }
+
+    public void setLableCompany(LableCompany lableCompany) {
+        this.lableCompany = lableCompany;
     }
 }
