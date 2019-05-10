@@ -10,6 +10,7 @@ import spring.nikitasterlit.repository.ManagerRepository;
 
 import java.util.List;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 public class LableController {
 

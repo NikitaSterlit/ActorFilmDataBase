@@ -11,6 +11,7 @@ import spring.nikitasterlit.repository.FilmRepository;
 import java.util.List;
 import java.util.Set;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 public class FilmController {
 
@@ -64,7 +65,14 @@ public class FilmController {
         filmRepository.deleteById(id);
         return "Film has been delete";
     }
-    @DeleteMapping("/film/{actorid}")
+    @PutMapping("/film/{filmid}")
+    public Film putFilmById(@PathVariable ("filmid")long id, @RequestBody Film film){
+        Film film1 = filmRepository.findById(id).get();
+        film1.setName(film.getName());
+        film1.setTitle(film.getTitle());
+        return filmRepository.save(film1);
+    }
+    @DeleteMapping("/film/actor/{actorid}")
     public String deleteFilmsByActorsId(@PathVariable("actorid")long id){
         Actor actor = actorRepository.findById(id).get();
         Set<Film> setFilms = actor.getFilms();

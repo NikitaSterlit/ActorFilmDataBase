@@ -11,6 +11,7 @@ import spring.nikitasterlit.repository.FilmRepository;
 import java.util.List;
 import java.util.Set;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 public class ActorController {
 

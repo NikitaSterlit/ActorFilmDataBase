@@ -11,6 +11,7 @@ import javax.print.attribute.standard.Finishings;
 import java.util.List;
 import java.util.Set;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 public class ManagerController {
 
